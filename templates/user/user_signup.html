@@ -3,8 +3,14 @@
 
 {% block content %}
 
-   <h1>name: {{osama}}</h1> 
-   <h3>Hello Osama</h3>
+
+
+   <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Submit</button>
+   </form>
+
 
 
 {% endblock %}

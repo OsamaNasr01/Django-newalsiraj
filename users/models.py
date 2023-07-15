@@ -12,4 +12,6 @@ class User(models.Model):
     def __str__(self):
         return self.first_name + ' ' + self.last_name  
     
-    
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.first_name + ' ' + self.last_name + ' ' + self.phone_number)
+        super(User, self).save(*args, **kwargs)

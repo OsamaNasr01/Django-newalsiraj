@@ -1,0 +1,18 @@
+{% extends 'base.html'%}
+
+
+{% block content %}
+{% load humanize %}
+
+
+   <h1>Users List</h1>
+   {% for user in users %}
+        <h3>{{ user.first_name}} {{user.last_name}}</h3>
+        <h3>{{ user.phone_number}}</h3>
+        <h3>{{ user.email }}</h3>
+        <h3>{{ user.created_at|naturalday  }}</h3>
+        <br>
+   {% endfor %}
+
+
+{% endblock %}
