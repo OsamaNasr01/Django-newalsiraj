@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from django.contrib.auth.forms import UserCreationForm
 
 
 
@@ -12,11 +13,37 @@ def login_user(request):
         if user is not None:
             login(request, user)
             # Redirect to a success page.
-            messages.success(request, ('you logged in successfully'))
+            messages.success(request, ('You Logged in Successfully'))
             return redirect('users_list')
         else:
             # Return an 'invalid login' error message.
-            messages.success(request, ('there was an error logging in'))
+            messages.success(request, ('There Was An Error Logging in'))
             return redirect('login')
     else:
         return render(request, 'members/login.html', {})
+    
+
+    
+def logout_user(request):
+    logout(request)
+    messages.success(request, ('You Logged Out!'))
+    return redirect('users_list')
+
+
+def register_user(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password1']
+            user = authenticate(username=username, password=password)
+            login(request, user)
+            messages.success(request, ('You registered Successfully!'))
+            return redirect('users_list')
+        else:
+            messages.success(request, ('There Was An Error Registering'))
+            return redirect('register')
+    else:
+        form = UserCreationForm()
+        return render(request, 'members/register.html', {'form' : form})
