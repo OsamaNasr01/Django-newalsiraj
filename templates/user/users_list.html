@@ -1,18 +1,33 @@
-{% extends 'base.html'%}
 
+
+
+{% extends 'base.html' %}
 
 {% block content %}
 {% load humanize %}
 
-
-   <h1>Users List</h1>
-   {% for user in users %}
-        <h3>{{ user.first_name}} {{user.last_name}}</h3>
-        <h3>{{ user.phone_number}}</h3>
-        <h3>{{ user.email }}</h3>
-        <h3>{{ user.created_at|naturalday  }}</h3>
-        <br>
-   {% endfor %}
-
+<div class="container">
+  <h1 class="mt-5">Users List</h1>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Phone Number</th>
+        <th>Email</th>
+        <th>Created At</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for user in users %}
+        <tr>
+          <td>{{ user.first_name }} {{ user.last_name }}</td>
+          <td>{{ user.phone_number }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.created_at|naturalday }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
 
 {% endblock %}
