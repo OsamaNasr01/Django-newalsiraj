@@ -1,8 +1,9 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 from .forms import RegisterUserForm
+from django.contrib.auth.models import User
 
 
 
@@ -15,7 +16,7 @@ def login_user(request):
             login(request, user)
             # Redirect to a success page.
             messages.success(request, ('You Logged in Successfully'))
-            return redirect('users_list')
+            return redirect('users')
         else:
             # Return an 'invalid login' error message.
             messages.success(request, ('There Was An Error Logging in'))
@@ -28,7 +29,7 @@ def login_user(request):
 def logout_user(request):
     logout(request)
     messages.success(request, ('You Logged Out!'))
-    return redirect('users_list')
+    return redirect('users')
 
 
 def register_user(request):
@@ -41,10 +42,12 @@ def register_user(request):
             user = authenticate(username=username, password=password)
             login(request, user)
             messages.success(request, ('You registered Successfully!'))
-            return redirect('users_list')
+            return redirect('users')
         else:
-            messages.success(request, ('There Was An Error Registering'))
-            return redirect('register')
+            errors = form.errors
+            error_message = errors.as_text().split(':')[0]
+            messages.error(request, ('There Was An Error Registering' + error_message))
+            return render(request, 'members/register.html', {'form' : form, 'errors': errors})
     else:
         form = RegisterUserForm()
         return render(request, 'members/register.html', {'form' : form})
@@ -52,4 +55,14 @@ def register_user(request):
 
 
 def home(request):
+    users = User.get().all()
     return render(request, 'home.html', {})
+
+def user_profile(request, username):
+    user = get_object_or_404(User, username=username)
+    context = {'user':user}
+    return render(request, 'members/user_profile.html', context)
+
+def users(request):
+    context = {'users': User.objects.all()}
+    return render(request, 'members/users.html', context)

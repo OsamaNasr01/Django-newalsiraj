@@ -9,10 +9,12 @@ class RegisterUserForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2')
+        fields = ('first_name', 'last_name', 'username', 'email', 'password1', 'password2')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['username'].widget.attrs.update({'class': 'form-control'})
         self.fields['password1'].widget.attrs.update({'class': 'form-control'})
         self.fields['password2'].widget.attrs.update({'class': 'form-control'})
+        self.fields['username'].label = 'Phone Number'
+        self.fields['username'].help_text = 'Enter your Whats App number'
