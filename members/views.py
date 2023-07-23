@@ -55,7 +55,6 @@ def register_user(request):
 
 
 def home(request):
-    users = User.get().all()
     return render(request, 'home.html', {})
 
 def user_profile(request, username):
