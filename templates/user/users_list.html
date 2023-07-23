@@ -1,0 +1,33 @@
+
+
+
+{% extends 'base.html' %}
+{% block title %} Users List {% endblock %}
+{% block content %}
+{% load humanize %}
+
+<div class="container">
+  <h1 class="mt-5">Users List</h1>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Phone Number</th>
+        <th>Email</th>
+        <th>Created At</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for user in users %}
+        <tr>
+          <td>{{ user.first_name }} {{ user.last_name }}</td>
+          <td>{{ user.phone_number }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.created_at|naturalday }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}
