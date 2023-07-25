@@ -39,6 +39,11 @@ def register_user(request):
         form = RegisterUserForm(request.POST)
         if form.is_valid():
             form.save()
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password1']
+            user = authenticate(username = username, password = password)
+            login(request, user)
+            messages.success(request, ('youregistred successfully'))
             return redirect('home')
         else:
             errors = form.errors
@@ -82,13 +87,30 @@ def add_company(request):
     else:
         form = AddCompanyForm()
         return render(request, 'members/add_company.html', {'form' : form})
+    
 
-
+def edit_company(request, slug):
+    company = get_object_or_404(Company, slug=slug)
+    if request.method == 'POST':
+        form = AddCompanyForm(request.POST, instance=company)
+        if form.is_valid():
+            form.save()
+            return redirect('company_detail', company_id=company.id)
+    else:
+        form = AddCompanyForm(instance=company)
+    return render(request, 'edit_company.html', {'form': form})
 
 
 
 def co_profile(request, slug):
-    decoded_slug = unquote(slug)
-    company = get_object_or_404(Company, slug=decoded_slug)
+    company = get_object_or_404(Company, slug=slug)
     context = {'company': company}
     return render(request, 'members/co_profile.html', context)
+
+
+
+def co_list(request):
+    context = {'companies': Company.objects.all()}
+    return render(request, 'members/co_list.html', context)
+
+

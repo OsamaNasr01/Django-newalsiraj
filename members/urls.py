@@ -11,4 +11,5 @@ urlpatterns = [
     path('members/<slug:username>/', views.user_profile, name = 'user_profile'),
     path('members/', views.users, name = 'users'),
     path('company/<slug:slug>/', views.co_profile, name = 'co_profile'),
+    path('companies/', views.co_list, name = 'companies'),
 ]
