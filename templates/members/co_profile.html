@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %} {{company.name}} {% endblock %}
+
+{% block content %}
+    <div class="shadow p-3 mb-5 bg-white rounded">
+        <h3>
+            <!-- {{member.first_name}} {{ member.last_name }} -->
+            {{ company.name  }}
+        </h3>
+        <p>description : {{ company.description }}</p>
+        <p>phone : {{ company.phone }}</p>
+        <p>email : {{ company.email }}</p>
+        <p>website : {{ company.website }}</p>
+        <p>address : {{ company.address }}</p>
+        <p>owner : {{ company.owner }}</p>
+        <p>category : {{ company.category.name }}</p>
+    </div>
+{% endblock %}

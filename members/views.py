@@ -2,8 +2,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
-from .forms import RegisterUserForm
+from .forms import RegisterUserForm, AddCompanyForm
 from django.contrib.auth.models import User
+from .models import Company
+from urllib.parse import unquote
 
 
 
@@ -37,12 +39,7 @@ def register_user(request):
         form = RegisterUserForm(request.POST)
         if form.is_valid():
             form.save()
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password1']
-            user = authenticate(username=username, password=password)
-            login(request, user)
-            messages.success(request, ('You registered Successfully!'))
-            return redirect('users')
+            return redirect('home')
         else:
             errors = form.errors
             error_message = errors.as_text().split(':')[0]
@@ -65,3 +62,33 @@ def user_profile(request, username):
 def users(request):
     context = {'users': User.objects.all()}
     return render(request, 'members/users.html', context)
+
+
+
+def add_company(request):
+    if request.method == 'POST':
+        form = AddCompanyForm(request.POST)
+        if form.is_valid():
+            company = form.save(commit=False)
+            company.owner = request.user
+            company.save()
+            messages.success(request, ('The Company has been Added Successfully!'))
+            return redirect('home')
+        else:
+            errors = form.errors
+            error_message = errors.as_text().split(':')[0]
+            messages.error(request, ('There Was An Error Registering' + error_message))
+            return render(request, 'members/add_company.html', {'form' : form, 'errors': errors})
+    else:
+        form = AddCompanyForm()
+        return render(request, 'members/add_company.html', {'form' : form})
+
+
+
+
+
+def co_profile(request, slug):
+    decoded_slug = unquote(slug)
+    company = get_object_or_404(Company, slug=decoded_slug)
+    context = {'company': company}
+    return render(request, 'members/co_profile.html', context)
