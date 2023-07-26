@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
-from .forms import RegisterUserForm, AddCompanyForm
+from .forms import RegisterUserForm, AddCompanyForm, AddCoCategoryForm
 from django.contrib.auth.models import User
 from .models import Company
 from urllib.parse import unquote
@@ -78,7 +78,7 @@ def add_company(request):
             company.owner = request.user
             company.save()
             messages.success(request, ('The Company has been Added Successfully!'))
-            return redirect('home')
+            return redirect('companies')
         else:
             errors = form.errors
             error_message = errors.as_text().split(':')[0]
@@ -114,3 +114,19 @@ def co_list(request):
     return render(request, 'members/co_list.html', context)
 
 
+
+def add_co_category(request):
+    if request.method == 'POST':
+        form = AddCoCategoryForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, ('The Category has been Added Successfully!'))
+            return redirect('companies')
+        else:
+            errors = form.errors
+            error_message = errors.as_text().split(':')[0]
+            messages.error(request, ('There Was An Error adding the category' + error_message))
+            return render(request, 'members/add_co_category.html', {'form' : form, 'errors': errors})
+    else:
+        form = AddCoCategoryForm()
+        return render(request, 'members/add_co_category.html', {'form' : form})

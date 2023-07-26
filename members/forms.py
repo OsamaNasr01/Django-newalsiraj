@@ -1,7 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
-from .models import Company
+from .models import Company, CoCategory
 
 class RegisterUserForm(UserCreationForm):
     first_name = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'class':'form-control'}))
@@ -37,3 +37,18 @@ class AddCompanyForm(forms.ModelForm):
         self.fields['address'].widget.attrs.update({'class': 'form-control'})
         self.fields['category'].widget.attrs.update({'class': 'form-control'})
 
+
+
+
+
+
+class AddCoCategoryForm(forms.ModelForm):
+
+    class Meta:
+        model = CoCategory
+        fields = ('name', 'description')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['name'].widget.attrs.update({'class': 'form-control'})
+        self.fields['description'].widget.attrs.update({'class': 'form-control'})

@@ -41,8 +41,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'django.contrib.humanize',
     'members',
-    'translate',
-    'deep_translator',
+    'googletrans',
 ]
 
 MIDDLEWARE = [
@@ -132,7 +131,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static', 'bootstrap'),
+    os.path.join(BASE_DIR, 'members\static\members', 'bootstrap'),
 ]
 
 

@@ -15,7 +15,7 @@
                     {% else %}
                       <a class="nav-link" href="#">Hello {{ user.username }}!</a>
                     {% endif %}
-                    {% if not request.company.owner == request.user %}
+                    {% if not user.companies.exists %}
                     <a class="nav-link" href="{% url 'add_company' %}">Add Company</a>
                     {% endif %}
                     

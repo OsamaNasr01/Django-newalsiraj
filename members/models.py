@@ -1,6 +1,7 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, AbstractUser
 from django.utils.text import slugify
+
 
 def arabic_to_english_slug(text):
     # Define a dictionary that maps Arabic characters to their corresponding English characters
@@ -62,8 +63,8 @@ class Company(models.Model):
     email = models.EmailField()
     website = models.URLField(max_length=200)
     address = models.CharField(max_length=300)
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
-    category = models.ManyToManyField(CoCategory)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='companies')
+    category = models.ManyToManyField(CoCategory, related_name='companies')
     slug = models.SlugField(max_length=150, blank=True)
 
     def __str__(self):
@@ -75,3 +76,5 @@ class Company(models.Model):
         if not self.slug:
             self.slug = arabic_to_english_slug(self.name)
         super(Company, self).save(*args, **kwargs)
+
+
