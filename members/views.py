@@ -5,7 +5,6 @@ from django.contrib.auth.forms import UserCreationForm
 from .forms import RegisterUserForm, AddCompanyForm, AddCoCategoryForm
 from django.contrib.auth.models import User
 from .models import Company
-from urllib.parse import unquote
 
 
 
@@ -89,16 +88,29 @@ def add_company(request):
         return render(request, 'members/add_company.html', {'form' : form})
     
 
-def edit_company(request, slug):
+def update_company(request, slug):
     company = get_object_or_404(Company, slug=slug)
     if request.method == 'POST':
         form = AddCompanyForm(request.POST, instance=company)
         if form.is_valid():
             form.save()
-            return redirect('company_detail', company_id=company.id)
+            messages.success(request, ('The Company has been Updated Successfully!'))
+            return redirect('co_profile', slug = slug)
     else:
         form = AddCompanyForm(instance=company)
-    return render(request, 'edit_company.html', {'form': form})
+    return render(request, 'members/update_company.html', {'form': form})
+
+
+
+
+def delete_company(request, slug):
+    company = get_object_or_404(Company, slug=slug)
+    if request.method == 'POST':
+        company.delete()
+        messages.success(request, ('The Company has been Deleted Successfully!'))
+        return redirect('companies')
+
+
 
 
 

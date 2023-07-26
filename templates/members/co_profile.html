@@ -18,6 +18,24 @@
         {% else %}
             <p>owner : {{ company.owner.username }}</p>
         {% endif %}
-        <p>category : {{ company.category.all }}</p>
+        <p>Categories : </p>
+        {% for category in company.category.all %}
+            <ul>
+                <li>
+                    {{ category }}
+                </li>
+            </ul>
+        {% endfor %}
+        <form action="{% url 'update_company' company.slug %}" method="POST">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+        <br>
+        
+        <form action="{% url 'delete_company' company.slug %}" method="POST">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
     </div>
 {% endblock %}
+

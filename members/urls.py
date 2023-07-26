@@ -11,6 +11,8 @@ urlpatterns = [
     path('members/<slug:username>/', views.user_profile, name = 'user_profile'),
     path('members/', views.users, name = 'users'),
     path('company/<slug:slug>/', views.co_profile, name = 'co_profile'),
+    path('company/update/<slug:slug>/', views.update_company, name = 'update_company'),
+    path('company/delete/<slug:slug>/', views.delete_company, name = 'delete_company'),
     path('companies/', views.co_list, name = 'companies'),
     path('add_co_category/', views.add_co_category, name = 'add_co_category'),
 ]

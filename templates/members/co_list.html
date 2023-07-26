@@ -20,7 +20,15 @@
                 {% else %}
                     <p>owner : {{ company.owner.username }}</p>
                 {% endif %}
-                <p>category : {{ company.category.name }}</p>
+                <p>Categories : </p>
+                {% for category in company.category.all %}
+                    <ul>
+                        <li>
+                            {{ category }}
+                        </li>
+                    </ul>
+                {% endfor %}
+                <a href="{% url 'update_company' company.slug %}" class="btn btn-primary">Update</a>
             </div>
         </a>
     {% endfor %}
