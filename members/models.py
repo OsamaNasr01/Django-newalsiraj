@@ -52,9 +52,17 @@ def arabic_to_english_slug(text):
 class CoCategory(models.Model):
     name = models.CharField(max_length=50)
     description = models.TextField(max_length=500)
+    slug = models.SlugField(max_length=150, blank=True)
 
     def __str__(self):
         return self.name
+    
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        if not self.slug:
+            self.slug = arabic_to_english_slug(self.name)
+        super(CoCategory, self).save(*args, **kwargs)
 
 class Company(models.Model):
     name = models.CharField(max_length=150)

@@ -26,7 +26,7 @@
                 </li>
             </ul>
         {% endfor %}
-        <form action="{% url 'update_company' company.slug %}" method="POST">
+        <form action="{% url 'update_company' company.slug %}" method="GET">
             {% csrf_token %}
             <button type="submit" class="btn btn-primary">Update</button>
         </form>

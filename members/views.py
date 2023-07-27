@@ -4,9 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 from .forms import RegisterUserForm, AddCompanyForm, AddCoCategoryForm
 from django.contrib.auth.models import User
-from .models import Company
-
-
+from .models import Company, CoCategory
 
 def login_user(request):
     if request.method == 'POST':
@@ -42,7 +40,7 @@ def register_user(request):
             password = form.cleaned_data['password1']
             user = authenticate(username = username, password = password)
             login(request, user)
-            messages.success(request, ('youregistred successfully'))
+            messages.success(request, ('You Registred Successfully'))
             return redirect('home')
         else:
             errors = form.errors
@@ -86,7 +84,7 @@ def add_company(request):
     else:
         co_form = AddCompanyForm()
         cat_form = AddCoCategoryForm()
-        return render(request, 'members/add_company.html', {
+        return render(request, 'members/company/add_company.html', {
             'form' : co_form,
             'co_category_form': cat_form
             })
@@ -102,7 +100,7 @@ def update_company(request, slug):
             return redirect('co_profile', slug = slug)
     else:
         form = AddCompanyForm(instance=company)
-    return render(request, 'members/update_company.html', {'form': form})
+    return render(request, 'members/company/update_company.html', {'form': form})
 
 
 
@@ -121,19 +119,20 @@ def delete_company(request, slug):
 def co_profile(request, slug):
     company = get_object_or_404(Company, slug=slug)
     context = {'company': company}
-    return render(request, 'members/co_profile.html', context)
+    return render(request, 'members/company/co_profile.html', context)
 
 
 
 def co_list(request):
     context = {'companies': Company.objects.all()}
-    return render(request, 'members/co_list.html', context)
+    return render(request, 'members/company/co_list.html', context)
 
 
 
 def add_co_category(request):
     if request.method == 'POST':
         form = AddCoCategoryForm(request.POST)
+        co_form = AddCompanyForm(request.POST)
         if form.is_valid():
             form.save()
             messages.success(request, ('The Category has been Added Successfully!'))
@@ -146,3 +145,32 @@ def add_co_category(request):
     else:
         form = AddCoCategoryForm()
         return render(request, 'members/add_co_category.html', {'form' : form})
+    
+
+def update_co_category(request, slug):
+    category  = get_object_or_404(CoCategory, slug=slug)
+    if request.method == 'POST':
+        form = AddCoCategoryForm(request.POST, instance=category)
+        if form.is_valid():
+            form.save()
+            messages.success(request, ('The Company Category has been Updated Successfully!'))
+            return redirect('co_category_list')
+    else:
+        form = AddCoCategoryForm(instance=category)
+    return render(request, 'members/company_category/update_co_category.html', {
+        'form': form,
+        'category': category
+        })
+
+
+def delete_co_category(request, slug):
+    category = get_object_or_404(CoCategory, slug=slug)
+    if request.method == 'POST':
+        category.delete()
+        messages.success(request, ('The Category has been Deleted Successfully!'))
+        return redirect('co_category_list')
+    
+
+def co_category_list(request):
+    context = {'categories': CoCategory.objects.all()}
+    return render(request, 'members/company_category/co_category_list.html', context)
