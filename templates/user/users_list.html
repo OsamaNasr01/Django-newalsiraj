@@ -6,28 +6,28 @@
 {% block content %}
 {% load humanize %}
 
-<div class="container">
-  <h1 class="mt-5">Users List</h1>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Phone Number</th>
-        <th>Email</th>
-        <th>Created At</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for user in users %}
-        <tr>
-          <td>{{ user.first_name }} {{ user.last_name }}</td>
-          <td>{{ user.phone_number }}</td>
-          <td>{{ user.email }}</td>
-          <td>{{ user.created_at|naturaltime }}</td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
+  Launch Modal
+</button>
+
+<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="myModalLabel">Modal Title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        This is the content of the modal.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 {% endblock %}

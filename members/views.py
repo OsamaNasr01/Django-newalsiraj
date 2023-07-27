@@ -84,8 +84,12 @@ def add_company(request):
             messages.error(request, ('There Was An Error Registering' + error_message))
             return render(request, 'members/add_company.html', {'form' : form, 'errors': errors})
     else:
-        form = AddCompanyForm()
-        return render(request, 'members/add_company.html', {'form' : form})
+        co_form = AddCompanyForm()
+        cat_form = AddCoCategoryForm()
+        return render(request, 'members/add_company.html', {
+            'form' : co_form,
+            'co_category_form': cat_form
+            })
     
 
 def update_company(request, slug):
@@ -133,7 +137,7 @@ def add_co_category(request):
         if form.is_valid():
             form.save()
             messages.success(request, ('The Category has been Added Successfully!'))
-            return redirect('companies')
+            return redirect('add_company')
         else:
             errors = form.errors
             error_message = errors.as_text().split(':')[0]
