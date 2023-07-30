@@ -132,7 +132,6 @@ def co_list(request):
 def add_co_category(request):
     if request.method == 'POST':
         form = AddCoCategoryForm(request.POST)
-        co_form = AddCompanyForm(request.POST)
         if form.is_valid():
             form.save()
             messages.success(request, ('The Category has been Added Successfully!'))
@@ -172,5 +171,21 @@ def delete_co_category(request, slug):
     
 
 def co_category_list(request):
-    context = {'categories': CoCategory.objects.all()}
+    context = {
+        'categories': CoCategory.objects.all(),
+        'co_category_form': AddCoCategoryForm()
+        }
     return render(request, 'members/company_category/co_category_list.html', context)
+
+
+def co_category_profile(request, slug):
+    category = get_object_or_404(CoCategory, slug=slug)
+    companies = Company.objects.filter(category = category)
+    form = AddCompanyForm()
+    context = {
+        'category': category,
+        'companies' : companies,
+        'form' : form
+        }
+    return render(request, 'members/company_category/co_category_profile.html', context)
+
