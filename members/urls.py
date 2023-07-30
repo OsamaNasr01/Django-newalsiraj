@@ -20,6 +20,6 @@ urlpatterns = [
     path('company/category/add/', views.add_co_category, name = 'add_co_category'),
     path('company/category/update/<slug:slug>', views.update_co_category, name = 'update_co_category'),
     path('company/category/delete/<slug:slug>', views.delete_co_category, name = 'delete_co_category'),
-    path('company/categories/all/', views.co_category_list, name = 'co_category_list'),
-    path('category/<slug:slug>/', views.co_category_profile, name='co_category_profile')
+    path('company/category/all/', views.co_category_list, name = 'co_category_list'),
+    path('company/category/<slug:slug>/', views.co_category_profile, name='co_category_profile')
 ]

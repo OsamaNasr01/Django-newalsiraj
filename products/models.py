@@ -52,7 +52,7 @@ def arabic_to_english_slug(text):
 class Category(models.Model):
     name = models.CharField(max_length=50)
     description = models.TextField(max_length=500)
-    parent_id = models.PositiveIntegerField()
+    parent_id = models.PositiveIntegerField(null=True)
     slug = models.SlugField(max_length=150, blank=True)
 
     def __str__(self):
