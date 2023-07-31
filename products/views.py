@@ -105,3 +105,11 @@ def update_product(request, slug):
         'form': form,
         'product': product
         })
+
+
+def delete_product(request, slug):
+    product = get_object_or_404(Product, slug=slug)
+    if request.method == 'POST':
+        product.delete()
+        messages.success(request, ('The product has been Deleted Successfully!'))
+        return redirect('p_category_list')
