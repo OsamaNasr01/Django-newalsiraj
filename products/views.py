@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect,get_object_or_404
-from .models import Category, Product
-from .forms import AddCategoryForm, AddProductForm
+from .models import Category, Product, Brand
+from .forms import AddCategoryForm, AddProductForm, BrandForm
 from django.contrib import messages
 
 # Create your views here.
@@ -113,3 +113,35 @@ def delete_product(request, slug):
         product.delete()
         messages.success(request, ('The product has been Deleted Successfully!'))
         return redirect('p_category_list')
+
+
+def brands(request):
+    brands = Brand.objects.all()
+    return render(request, 'products/brands/brands.html', {
+        'brands': brands,
+        'form' : BrandForm(),
+    })
+
+
+def add_brand(request):
+    if request.method == 'POST':
+        form = BrandForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, ('The Brand has been Added Successfully!'))
+            return redirect('brands')
+        else:
+            errors = form.errors
+            error_message = errors.as_text().split(':')[0]
+            messages.error(request, ('There Was An Error adding the Brand' + error_message))
+            return render(request, 'products/brands/add_brand.html', {'form' : form, 'errors': errors})
+    else:
+        form = BrandForm()
+        return render(request, 'products/brands/add_brand.html', {'form' : form})
+    
+
+def brand_profile(request, slug):
+    brand = get_object_or_404(Brand, slug=slug)
+    return render(request, 'products/brands/brand_profile.html', {
+        'brand': brand,
+    })

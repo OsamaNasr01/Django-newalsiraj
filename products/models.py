@@ -88,6 +88,7 @@ class Product(models.Model):
     name = models.CharField(max_length=50)
     description = models.TextField(max_length=500)
     category = models.ForeignKey(Category, related_name='products', on_delete=models.SET_NULL, null=True)
+    brand = models.ForeignKey(Brand, related_name='products', on_delete=models.SET_NULL, null=True)
     slug = models.SlugField(max_length=150, blank=True)
 
     def __str__(self):
