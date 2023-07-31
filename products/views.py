@@ -38,7 +38,7 @@ def p_category_profile(request, slug):
     form = AddProductForm()
     context = {
         'category': category,
-        'products' : Product.objects.all(),
+        'products' : Product.objects.filter( category= category),
         'form' : form
         }
     return render(request, 'products/categories/p_category_profile.html', context)

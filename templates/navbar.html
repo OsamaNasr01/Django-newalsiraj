@@ -9,6 +9,9 @@
           <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
               <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+              <a class="nav-link" href="{% url 'companies' %}">Companies</a>
+              <a class="nav-link" href="{% url 'p_category_list' %}">Products</a>
+          
                 {% if user.is_authenticated %}
                     {% if  user.first_name  %}
                       <a class="nav-link" href="#">Hello {{ user.first_name }}!</a>
@@ -24,7 +27,6 @@
                     <a class="nav-link" href="{% url 'register' %}">Register</a>
                     <a class="nav-link" href="{% url 'login' %}">Login</a>
                 {% endif %}
-            
               
             </div>
           </div>
