@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'members',
     'products',
-    'googletrans',
 ]
 
 MIDDLEWARE = [

@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %} {{product.name}} {% endblock %}
+
+{% block content %}
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add-co-category-modal">
+    Update 
+  </button>
+
+  <div class="modal fade" id="add-co-category-modal" tabindex="-1" aria-labelledby="add-co-category-modal" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="add-co-category-modal">Update</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="{% url 'update_product' product.slug %}" method="post" name="add_co_category_form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Update</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br><br>
+    <div class="shadow p-3 mb-5 bg-white rounded">
+        <h3>
+            <!-- {{member.first_name}} {{ member.last_name }} -->
+            {{ product.name  }}
+        </h3>
+        <p>description : {{ product.description }}</p>
+        <p>category : {{ product.category }}</p>
+    </div>
+{% endblock %}
+

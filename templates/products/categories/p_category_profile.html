@@ -20,6 +20,7 @@
           <form action="{% url 'add_product' %}" method="post" name="add_co_category_form">
             {% csrf_token %}
             {{ form.as_p }}
+            <input type="hidden" name="category_id" value="{{ category.id }}">
             <button type="submit" class="btn btn-primary">+ Add Product</button>
           </form>
         </div>
@@ -36,7 +37,7 @@
     </div>
     <br>
     {% for product in products %}
-        <a href="" class="text-dark text-decoration-none">
+        <a href="{% url 'product' product.slug %}" class="text-dark text-decoration-none">
             <div class="shadow p-3 mb-5 bg-white rounded">
                 
                 <div>
