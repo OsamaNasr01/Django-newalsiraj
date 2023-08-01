@@ -118,7 +118,11 @@ def delete_company(request, slug):
 
 def co_profile(request, slug):
     company = get_object_or_404(Company, slug=slug)
-    context = {'company': company}
+    form = AddCompanyForm(instance = company)
+    context = {
+        'company': company,
+        'form' : form,
+        }
     return render(request, 'members/company/co_profile.html', context)
 
 

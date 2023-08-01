@@ -19,5 +19,6 @@ urlpatterns = [
     path('product/brand/<slug:slug>/', views.brand_profile, name='brand_profile'),
     path('product/brand/update/<slug:slug>/', views.update_brand, name='update_brand'),
     path('product/brand/delete/<slug:slug>/', views.delete_brand, name='delete_brand'),
-
+    # price routes
+    path('product/price/update/<slug:slug>/', views.update_price, name='update_price'),
 ]

@@ -1,6 +1,6 @@
 
 from django import forms
-from .models import Category, Product, Brand
+from .models import Category, Product, Brand, Price
 
 
 
@@ -42,3 +42,17 @@ class BrandForm(forms.ModelForm):
         self.fields['country'].widget.attrs.update({'class': 'form-control'})
         self.fields['description'].widget.attrs.update({'class': 'form-control'})
         self.fields['category'].widget.attrs.update({'class': 'form-control'})
+
+
+
+class PriceForm(forms.ModelForm):
+
+    class Meta:
+        model = Price
+        fields = ('value',)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['value'].widget.attrs.update({'class': 'form-control'})
+        self.fields['value'].label = 'Price'
+

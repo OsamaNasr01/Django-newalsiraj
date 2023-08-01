@@ -60,9 +60,42 @@
             <!-- {{member.first_name}} {{ member.last_name }} -->
             {{ product.name  }}
         </h3>
+        <h6>
+          Price : {{ product.prices.last.value }}
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#update-price-modal">
+            Update Price
+          </button>
+        </h6>
+        <ul>
+          <li>
+            Last updated at: {{ product.prices.last.created_at }}
+          </li>
+        </ul>
         <p>description : {{ product.description }}</p>
         <p>Brand : {{ product.brand.name }}</p>
         <p>category : {{ product.category }}</p>
     </div>
+
+  
+    <div class="modal fade" id="update-price-modal" tabindex="-1" aria-labelledby="update-price-modal" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="update-price-modal">Update</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+            </button>
+          </div>
+          <div class="modal-body">
+            <form action="{% url 'update_price' product.slug %}" method="post" name="update-price_form">
+              {% csrf_token %}
+              {{ price_form.as_p }}
+              <button type="submit" class="btn btn-primary">Update</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+  
 {% endblock %}
 

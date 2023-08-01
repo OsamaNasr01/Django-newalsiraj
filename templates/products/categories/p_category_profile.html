@@ -27,6 +27,7 @@
             <form action="{% url 'add_product' %}" method="post" name="add_co_category_form">
               {% csrf_token %}
               {{ form.as_p }}
+              {{ price_form.as_p }}
               <input type="hidden" name="category_id" value="{{ category.id }}">
               <button type="submit" class="btn btn-primary">+ Add Product</button>
             </form>

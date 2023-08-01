@@ -89,6 +89,7 @@ class Product(models.Model):
     description = models.TextField(max_length=500)
     category = models.ForeignKey(Category, related_name='products', on_delete=models.SET_NULL, null=True)
     brand = models.ForeignKey(Brand, related_name='products', on_delete=models.SET_NULL, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
     slug = models.SlugField(max_length=150, blank=True)
 
     def __str__(self):
@@ -105,7 +106,8 @@ class Product(models.Model):
 
 class Price(models.Model):
     value = models.FloatField()
-    product = models.ForeignKey(Product, related_name='prices', on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, related_name='prices', on_delete=models.CASCADE, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
 
 
 
