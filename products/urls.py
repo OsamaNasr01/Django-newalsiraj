@@ -17,7 +17,7 @@ urlpatterns = [
     path('product/brand/all/', views.brands, name='brands'),
     path('product/brand/add/', views.add_brand, name='add_brand'),
     path('product/brand/<slug:slug>/', views.brand_profile, name='brand_profile'),
-    # path('product/brand/update/<slug:slug>/', views.update_brand, name='update_brand'),
-    # path('product/brand/delete/<slug:slug>/', views.delete_brand, name='delete_brand'),
+    path('product/brand/update/<slug:slug>/', views.update_brand, name='update_brand'),
+    path('product/brand/delete/<slug:slug>/', views.delete_brand, name='delete_brand'),
 
 ]

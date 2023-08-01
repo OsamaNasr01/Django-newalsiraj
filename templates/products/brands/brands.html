@@ -36,7 +36,14 @@
                 </h3>
                 <p>description : {{ brand.description }}</p>
                 <p>country : {{ brand.country }}</p>
-                <p>category : {{ brand.category }}</p>
+                <p>Categories : </p>
+                {% for category in brand.category.all %}
+                    <ul>
+                        <li>
+                            {{ category }}
+                        </li>
+                    </ul>
+                {% endfor %}
             </div>
         </a>
     {% endfor %}

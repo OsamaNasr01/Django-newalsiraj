@@ -142,6 +142,33 @@ def add_brand(request):
 
 def brand_profile(request, slug):
     brand = get_object_or_404(Brand, slug=slug)
+    form = BrandForm(instance = brand)
     return render(request, 'products/brands/brand_profile.html', {
         'brand': brand,
+        'form' : form,
     })
+
+
+def update_brand(request, slug):
+    brand  = get_object_or_404(Brand, slug=slug)
+    if request.method == 'POST':
+        form = BrandForm(request.POST, instance=brand)
+        if form.is_valid():
+            form.save()
+            messages.success(request, ('The Brand Category has been Updated Successfully!'))
+            return render(request, 'products/brands/brand_profile.html', {'brand':brand})
+    else:
+        form = BrandForm(instance=brand)
+    return render(request, 'products/brands/update_brand.html', {
+        'form': form,
+        'brand': brand
+        })
+
+
+def delete_brand(request, slug):
+    brand = get_object_or_404(Brand, slug=slug)
+    if request.method == 'POST':
+        brand.delete()
+        messages.success(request, ('The Brand has been Deleted Successfully!'))
+        return redirect('brands')
+
