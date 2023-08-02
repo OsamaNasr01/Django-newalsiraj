@@ -53,7 +53,7 @@ class Category(models.Model):
     name = models.CharField(max_length=50)
     description = models.TextField(max_length=500)
     parent_id = models.PositiveIntegerField(null=True)
-    slug = models.SlugField(max_length=150, blank=True)
+    slug = models.SlugField(max_length=150, blank=True, unique=True)
 
     def __str__(self):
         return self.name
@@ -71,7 +71,7 @@ class Brand(models.Model):
     country = models.CharField(max_length=25)
     description = models.TextField(max_length=500)
     category = models.ManyToManyField(Category, related_name='brands')
-    slug = models.SlugField(max_length=150, blank=True)
+    slug = models.SlugField(max_length=150, blank=True, unique=True)
 
     def __str__(self):
         return self.name
@@ -90,7 +90,7 @@ class Product(models.Model):
     category = models.ForeignKey(Category, related_name='products', on_delete=models.SET_NULL, null=True)
     brand = models.ForeignKey(Brand, related_name='products', on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
-    slug = models.SlugField(max_length=150, blank=True)
+    slug = models.SlugField(max_length=150, blank=True, unique=True)
 
     def __str__(self):
         return self.name
@@ -106,6 +106,7 @@ class Product(models.Model):
 
 class Price(models.Model):
     value = models.FloatField()
+    discount = models.PositiveSmallIntegerField(default=0)
     product = models.ForeignKey(Product, related_name='prices', on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
 

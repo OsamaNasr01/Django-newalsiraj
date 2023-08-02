@@ -19,9 +19,9 @@ def add_p_category(request):
     if request.method == 'POST':
         form = AddCategoryForm(request.POST)
         if form.is_valid():
-            form.save()
+            category = form.save()
             messages.success(request, ('The Category has been Added Successfully!'))
-            return redirect('p_category_list')
+            return p_category_profile(request, category.slug)
         else:
             errors = form.errors
             error_message = errors.as_text().split(':')[0]
@@ -54,7 +54,7 @@ def update_p_category(request, slug):
         if form.is_valid():
             form.save()
             messages.success(request, ('The Company Category has been Updated Successfully!'))
-            return redirect('co_category_list')
+            return p_category_profile(request, category.slug)
     else:
         form = AddCategoryForm(instance=category)
     return render(request, 'products/categories/update_p_category.html', {
@@ -68,16 +68,16 @@ def add_product(request):
         form = AddProductForm(request.POST)
         price_form = PriceForm(request.POST)
         if form.is_valid() and price_form.is_valid():
-            product = form.save(commit=False)
+            productt = form.save(commit=False)
             category_id = request.POST.get('category_id')
             category = Category.objects.get(id=category_id)
-            product.category = category
-            product.save()
+            productt.category = category
+            productt.save()
             price = price_form.save(commit=False)
-            price.product = product
+            price.product = productt
             price.save()
             messages.success(request, ('The Category has been Added Successfully!'))
-            return redirect('p_category_list')
+            return product(request, productt.slug)
         else:
             errors = form.errors
             error_message = errors.as_text().split(':')[0]
@@ -89,18 +89,24 @@ def add_product(request):
     
 def product(request, slug):
     product = get_object_or_404(Product, slug=slug)
+    original_price = product.prices.last().value
+    discount  = product.prices.last().discount
+    price = (original_price * (100 - discount ))/100
     form = AddProductForm(instance = product)
     price_form = PriceForm(instance = product.prices.last())
     context = {
         'product' : product,
         'form' : form,
         'price_form' : price_form,
+        'price': price,
+        'original_price': original_price,
+        'discount' : discount,
         }
     return render(request, 'products/products/product.html', context)
 
 
 def update_product(request, slug):
-    product  = get_object_or_404(Product, slug=slug)
+    productt  = get_object_or_404(Product, slug=slug)
     if request.method == 'POST':
         form = AddProductForm(request.POST, instance=product)
         if form.is_valid():
@@ -108,12 +114,12 @@ def update_product(request, slug):
             form = AddProductForm(instance = product)
             price_form = PriceForm(instance = product.prices.last())
             context = {
-                'product' : product,
+                'product' : productt,
                 'form' : form,
                 'price_form' : price_form,
                 }
             messages.success(request, ('The Product Category has been Updated Successfully!'))
-            return render(request, 'products/products/product.html', context)
+            return product(request, productt.slug)
     else:
         form = AddProductForm(instance=product)
     return render(request, 'products/products/update_product.html', {
@@ -142,9 +148,9 @@ def add_brand(request):
     if request.method == 'POST':
         form = BrandForm(request.POST)
         if form.is_valid():
-            form.save()
+            brand = form.save()
             messages.success(request, ('The Brand has been Added Successfully!'))
-            return redirect('brands')
+            return brand_profile(request, brand.slug)
         else:
             errors = form.errors
             error_message = errors.as_text().split(':')[0]
@@ -171,7 +177,7 @@ def update_brand(request, slug):
         if form.is_valid():
             form.save()
             messages.success(request, ('The Brand Category has been Updated Successfully!'))
-            return render(request, 'products/brands/brand_profile.html', {'brand':brand})
+            return brand_profile(request, brand.slug)
     else:
         form = BrandForm(instance=brand)
     return render(request, 'products/brands/update_brand.html', {
@@ -193,18 +199,11 @@ def update_price(request, slug):
         form = PriceForm(request.POST)
         if form.is_valid():
             new_price = form.save(commit=False)
-            product = Product.objects.get(slug=slug)
-            new_price.product = product
+            productt = Product.objects.get(slug=slug)
+            new_price.product = productt
             new_price.save()
-            form = AddProductForm(instance = product)
-            price_form = PriceForm(instance = product.prices.last())
-            context = {
-                'product' : product,
-                'form' : form,
-                'price_form' : price_form,
-                }
             messages.success(request, ('The Price has been Updateded Successfully!'))
-            return render(request, 'products/products/product.html', context)
+            return product(request, slug)
         else:
             errors = form.errors
             error_message = errors.as_text().split(':')[0]

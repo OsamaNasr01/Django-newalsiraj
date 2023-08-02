@@ -49,10 +49,11 @@ class PriceForm(forms.ModelForm):
 
     class Meta:
         model = Price
-        fields = ('value',)
+        fields = ('value', 'discount',)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['value'].widget.attrs.update({'class': 'form-control'})
+        self.fields['discount'].widget.attrs.update({'class': 'form-control'})
         self.fields['value'].label = 'Price'
 

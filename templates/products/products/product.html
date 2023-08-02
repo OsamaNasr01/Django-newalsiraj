@@ -62,12 +62,18 @@
             {{ product.name  }}
         </h3>
         <h6>
-          Price : {{ product.prices.last.value }}
+          Price : {{ price }}
           <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#update-price-modal">
             Update Price
           </button>
         </h6>
         <ul>
+          <li>
+            Orignal Price : {{ original_price }}
+          </li>
+          <li>
+            Discount : {{ discount }}%
+          </li>
           <li>
             Last updated at: {{ product.prices.last.created_at|naturaltime }}
           </li>
