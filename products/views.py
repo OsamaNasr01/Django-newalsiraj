@@ -43,6 +43,7 @@ def p_category_profile(request, slug):
     form = AddProductForm()
     price_form = PriceForm()
     category_form = AddCategoryForm()
+    update_category_form = AddCategoryForm(instance = category)
     context = {
         'category': category,
         'sub_categories': sub_categories,
@@ -50,6 +51,7 @@ def p_category_profile(request, slug):
         'form' : form,
         'price_form' : price_form,
         'category_form': category_form,
+        'update_category_form': update_category_form,
         }
     return render(request, 'products/categories/p_category_profile.html', context)
 
@@ -71,6 +73,14 @@ def update_p_category(request, slug):
         })
 
 
+def delete_p_category(request, slug):
+    category = get_object_or_404(Category, slug=slug)
+    if request.method == 'POST':
+        category.delete()
+        messages.success(request, ('The category has been Deleted Successfully!'))
+        return redirect('p_category_list')
+
+
 def add_product(request):
     if request.method == 'POST':
         form = AddProductForm(request.POST)
@@ -84,7 +94,7 @@ def add_product(request):
             price = price_form.save(commit=False)
             price.product = productt
             price.save()
-            messages.success(request, ('The Category has been Added Successfully!'))
+            messages.success(request, ('The Product has been Added Successfully!'))
             return product(request, productt.slug)
         else:
             errors = form.errors
