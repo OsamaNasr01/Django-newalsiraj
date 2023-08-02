@@ -3,6 +3,30 @@
 {% block title %} {{category.name}} {% endblock %}
 
 {% block content %}
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add-category-modal">
+      Add sub Category
+    </button>
+
+    <div class="modal fade" id="add-category-modal" tabindex="-1" aria-labelledby="add-category-modal" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="add-category-modal">+ Add subcategory</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+            </button>
+          </div>
+          <div class="modal-body">
+            <form action="{% url 'add_p_category' %}" method="post" name="add_category_form">
+              {% csrf_token %}
+              {{ category_form.as_p }}
+              <input type="hidden" name="category_id" value="{{ category.id }}">
+              <button type="submit" class="btn btn-primary">+ Add sub Category</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br><br>
         
     <div class="shadow p-3 mb-5 bg-white rounded">
         <h3>
@@ -11,20 +35,36 @@
         </h3>
         <p>description : {{ category.description }}</p>
     </div>
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add-co-category-modal">
+    {% for sub in sub_categories %}
+        <a href="{% url 'p_category_profile' sub.slug %}" class="text-dark text-decoration-none">
+            <div class="shadow p-3 mb-5 bg-white rounded">
+                
+                <div>
+                    
+                <h6>{{ sub.name }}</h6>
+                <p>description : {{ sub.description }}</p>
+                </div>
+                
+            </div>
+        </a>
+    {% endfor %}
+
+
+
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add-product-modal">
       Add Product
     </button>
   
-    <div class="modal fade" id="add-co-category-modal" tabindex="-1" aria-labelledby="add-co-category-modal" aria-hidden="true">
+    <div class="modal fade" id="add-product-modal" tabindex="-1" aria-labelledby="add-product-modal" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="add-co-category-modal">+ Add Product</h5>
+            <h5 class="modal-title" id="add-product-modal">+ Add Product</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
             </button>
           </div>
           <div class="modal-body">
-            <form action="{% url 'add_product' %}" method="post" name="add_co_category_form">
+            <form action="{% url 'add_product' %}" method="post" name="add_product_form">
               {% csrf_token %}
               {{ form.as_p }}
               {{ price_form.as_p }}

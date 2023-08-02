@@ -19,7 +19,11 @@ def add_p_category(request):
     if request.method == 'POST':
         form = AddCategoryForm(request.POST)
         if form.is_valid():
-            category = form.save()
+            category = form.save(commit=False)
+            parent_category_id = request.POST.get('category_id')
+            parent_category = Category.objects.get(id=parent_category_id)
+            category.parent_id = parent_category.id
+            category.save()
             messages.success(request, ('The Category has been Added Successfully!'))
             return p_category_profile(request, category.slug)
         else:
@@ -35,13 +39,17 @@ def add_p_category(request):
 
 def p_category_profile(request, slug):
     category = get_object_or_404(Category, slug=slug)
+    sub_categories = Category.objects.filter(parent_id = category.id)
     form = AddProductForm()
     price_form = PriceForm()
+    category_form = AddCategoryForm()
     context = {
         'category': category,
+        'sub_categories': sub_categories,
         'products' : Product.objects.filter( category= category),
         'form' : form,
         'price_form' : price_form,
+        'category_form': category_form,
         }
     return render(request, 'products/categories/p_category_profile.html', context)
 
