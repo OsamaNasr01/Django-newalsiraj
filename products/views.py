@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect,get_object_or_404
 from .models import Category, Product, Brand, Price
-from .forms import AddCategoryForm, AddProductForm, BrandForm, PriceForm, SpecForm
+from .forms import AddCategoryForm, AddProductForm, BrandForm, PriceForm, SpecForm, SpecValueForm
 from django.contrib import messages
 
 # Create your views here.
@@ -96,6 +96,28 @@ def add_product(request):
             price = price_form.save(commit=False)
             price.product = productt
             price.save()
+            specs = category.specs.all()
+            for spec in specs:
+                spec_input_type = request.POST.get(spec.name, None)
+                print(spec_input_type)
+                # if spec_input_type is int:
+                #     spec_form = NumericSpecForm(request.POST)
+                #     spec_value = spec_form.save(commit=False)
+                #     spec_value.value = request.POST.get(spec.name)
+                #     spec_value.spec = spec
+                #     spec_value.save()
+                # elif spec_input_type is str:
+                #     spec_form = TextSpecForm(request.POST)
+                #     spec_value = spec_form.save(commit=False)
+                #     spec_value.value = request.POST.get(spec.name)
+                #     spec_value.spec = spec
+                #     spec_value.save()
+                # elif spec_input_type is bool:
+                #     spec_form = BooleanSpecForm(request.POST)
+                #     spec_value = spec_form.save(commit=False)
+                #     spec_value.value = request.POST.get(spec.name)
+                #     spec_value.spec = spec
+                #     spec_value.save()                        
             messages.success(request, ('The Product has been Added Successfully!'))
             return product(request, productt.slug)
         else:
@@ -246,3 +268,6 @@ def add_spec(request):
             error_message = errors.as_text().split(':')[0]
             messages.error(request, ('There Was An Error adding the specification' + error_message))
             return p_category_profile(request, category.slug)
+
+
+

@@ -150,6 +150,21 @@
               {% csrf_token %}
               {{ form.as_p }}
               {{ price_form.as_p }}
+              <hr>
+              {% for spec in category.specs.all %}
+                {% if spec.type == 2 %}
+                  <label for="{{spec.name}}">{{ spec.name }}</label>
+                  <input type="text" name="{{ spec.name }}" class="form-control" id="{{spec.name}}" placeholder="Enter {{ spec.name }}">
+                  <small id="{{spec.name}}Help" class="form-text text-muted"></small><br>
+                {% elif spec.type == 1 %}
+                  <label for="{{spec.name}}">{{ spec.name }}</label>
+                  <input type="number" name="{{ spec.name }}" class="form-control" id="{{spec.name}}" placeholder="Enter {{ spec.name }}">
+                  <small id="{{spec.name}}Help" class="form-text text-muted">{{ spec.unit }}.</small><br><br>
+                {% elif spec.type == 3 %}
+                  <label for="{{spec.name}}">{{ spec.name }}</label>
+                  <input type="checkbox" name="{{ spec.name }}" class="form-check-input" id="{{spec.name}}"><br><br>
+                {% endif %}
+              {% endfor %}
               <input type="hidden" name="category_id" value="{{ category.id }}">
               <button type="submit" class="btn btn-primary">+ Add Product</button>
             </form>
