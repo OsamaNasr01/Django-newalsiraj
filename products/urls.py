@@ -22,4 +22,7 @@ urlpatterns = [
     path('product/brand/delete/<slug:slug>/', views.delete_brand, name='delete_brand'),
     # price routes
     path('product/price/update/<slug:slug>/', views.update_price, name='update_price'),
+    # Specs routes
+    path('product/specs/add/', views.add_spec, name='add_spec'),
+
 ]

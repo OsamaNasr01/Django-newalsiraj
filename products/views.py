@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect,get_object_or_404
 from .models import Category, Product, Brand, Price
-from .forms import AddCategoryForm, AddProductForm, BrandForm, PriceForm
+from .forms import AddCategoryForm, AddProductForm, BrandForm, PriceForm, SpecForm
 from django.contrib import messages
 
 # Create your views here.
@@ -44,6 +44,7 @@ def p_category_profile(request, slug):
     price_form = PriceForm()
     category_form = AddCategoryForm()
     update_category_form = AddCategoryForm(instance = category)
+    spec_form = SpecForm()
     context = {
         'category': category,
         'sub_categories': sub_categories,
@@ -52,6 +53,7 @@ def p_category_profile(request, slug):
         'price_form' : price_form,
         'category_form': category_form,
         'update_category_form': update_category_form,
+        'spec_form' : spec_form,
         }
     return render(request, 'products/categories/p_category_profile.html', context)
 
@@ -228,3 +230,19 @@ def update_price(request, slug):
             messages.error(request, ('There Was An Error adding the Brand' + error_message))
             return render(request, 'products/brands/add_brand.html', {'form' : form, 'errors': errors})
 
+def add_spec(request):
+    if request.method == 'POST':
+        form = SpecForm(request.POST)
+        category_id = request.POST.get('category_id')
+        category = Category.objects.get(id=category_id)
+        if form.is_valid():
+            spec = form.save(commit=False)
+            spec.category = category
+            spec.save()
+            messages.success(request, ('The Specification has been Added Successfully!'))
+            return p_category_profile(request, category.slug)
+        else:
+            errors = form.errors
+            error_message = errors.as_text().split(':')[0]
+            messages.error(request, ('There Was An Error adding the specification' + error_message))
+            return p_category_profile(request, category.slug)

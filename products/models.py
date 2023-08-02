@@ -119,7 +119,7 @@ class Spec(models.Model):
         (2, 'Text'),
         (3, 'Boolean'),
     ])
-    unit = models.CharField(max_length=50, null=True)
+    unit = models.CharField(max_length=50, null=True, blank=True)
     category = models.ForeignKey(Category, related_name='specs', on_delete=models.CASCADE)
 
 class NumericSpec(models.Model):
@@ -129,11 +129,11 @@ class NumericSpec(models.Model):
 
 
 class TextSpec(models.Model):
-    value = models.FloatField()
+    value = models.CharField(max_length=100)
     spec = models.ForeignKey(Spec, related_name='text', on_delete=models.CASCADE)
 
 
 
 class BooleanSpec(models.Model):
-    value = models.FloatField()
+    value = models.BooleanField()
     spec = models.ForeignKey(Spec, related_name='bool', on_delete=models.CASCADE)
